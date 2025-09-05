@@ -7,6 +7,7 @@ class Pop
 private:
     uint16_t currentPopSize;
     float happiness;
+    float efficiency;
     ReligionType mainReligion;
     CultureType mainCulture;
     SocialClassType socialClass;
@@ -14,6 +15,8 @@ private:
 public:
     Pop(/* args */);
     ~Pop();
+    void calculateEfficiency(/*all needed args*/ );
+
 };
 
 
