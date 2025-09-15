@@ -12,8 +12,18 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
+add_library(game_lib
+    lib/utils/scenesComponents/Component.cpp
+)
+
+target_include_directories(game_lib PUBLIC
+    src
+    lib/scenesComponents
+)
+
 add_executable(main src/main.cpp)
 target_compile_features(main PRIVATE cxx_std_17)
-target_link_libraries(main PRIVATE SFML::Graphics)
-target_link_libraries(main PRIVATE SFML::Audio)
-target_link_libraries(main PRIVATE SFML::Network)
+target_link_libraries(game_lib PUBLIC SFML::Graphics)
+target_link_libraries(game_lib PUBLIC SFML::Audio)
+target_link_libraries(game_lib PUBLIC SFML::Network)
+target_link_libraries(main PRIVATE game_lib)
