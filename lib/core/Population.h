@@ -35,9 +35,11 @@ private:
     public:
     Population();
     ~Population();
+    void calculatePopulationGrowth();
     void calculateReligiousConversion();
     void calculateCulturalConversion();
     void calculateEndOfMonth();
+    void calculateEndOfYear();
     void consolidatePopChunks();
 
 };

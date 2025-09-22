@@ -35,6 +35,6 @@ public:
     void setMainCulture(CultureType culture) { mainCulture = culture; }
     SocialClassType getSocialClass() const { return socialClass; }
     void setSocialClass(SocialClassType socialClass) { this->socialClass = socialClass; }
+    bool getIsMobilised() const { return isMobilised; }
+    void setIsMobilised(bool mobilised) { isMobilised = mobilised; }
 };
-
-
