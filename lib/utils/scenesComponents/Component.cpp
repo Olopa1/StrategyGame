@@ -1,4 +1,4 @@
-#include "Component.h"
+#include "Component.hpp"
 
 void Component::setMainColors(const ComponentStatesColor &colors){
     this->componenetMainColors = colors;
@@ -49,4 +49,58 @@ Component::Component(std::list<sf::Vector2f> &vectors, size_t points_count, AppC
         listElement++;
     }
     this->componentText = std::make_shared<sf::Text>(appContext.resourceManager.getFont(fontName), "");
+}
+
+void Component::setTextToCenter(){
+    if(this->componentShape && this->componentText){
+        auto currentShapePos = this->componentShape->getPosition();
+        auto currentShapeBoundingRect = this->componentShape->getGlobalBounds();
+        auto currentTextBoundingRect = this->componentText->getGlobalBounds();
+        float xOffsetForText = abs(currentShapeBoundingRect.size.x/2 - currentTextBoundingRect.size.x/2);
+        float yOffsetForText = abs(currentShapeBoundingRect.size.y/2 - currentTextBoundingRect.size.y/2);
+        sf::Vector2f newTextPos(currentShapePos.x + xOffsetForText, currentShapePos.y + yOffsetForText);
+        this->componentText->setPosition(newTextPos);
+    }
+}
+
+void Component::setPosAbsolute(sf::Vector2f &position){
+    if(this->componentShape){
+        this->componentShape->setPosition(position);
+        this->setTextToCenter();
+    }
+}
+
+void Component::setPosRelativeToParent(sf::Vector2f &position, sf::Vector2f &marginOffset){
+    if(this->componentShape){
+        this->componentShape->setPosition(position);
+        this->componentShape->move(marginOffset);
+        this->setTextToCenter();
+    }
+}
+
+void Component::move(sf::Vector2f &offset){
+    if(this->componentShape && this->componentText){
+        this->componentShape->move(offset);
+        this->componentText->move(offset);
+    }
+}
+
+void Component::setText(std::string &text){
+    if(this->componentShape && this->componentText){
+        this->componentText->setString(text);
+        this->setTextToCenter();
+    }
+}
+
+void Component::eventListener(const sf::Event &event,const sf::RenderWindow &window){
+    if(event.is<sf::Event::MouseButtonPressed>()){
+        std::thread clickT(
+            [this](){
+                this->onClick();
+            });
+    }
+}
+
+sf::Vector2f Component::getComponentSize(){
+    return this->componentShape->getGlobalBounds().size;
 }

@@ -1,24 +1,34 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
 #include "AppContext.hpp"
+#include "Component.hpp"
+#include "Button.hpp"
+#include "ContainerH.hpp"
 using namespace std;
 
 int main()
 {
     AppContext appContext;
-
+    appContext.resourceManager.setFont("default","C:\\dominik_rzeczy\\programy\\gra\\StrategyGame\\static\\fonts\\comic.ttf");
     auto window = sf::RenderWindow(sf::VideoMode({appContext.config.windowWidht, appContext.config.windowHeight}), "CMake SFML Project");
+    Button component = Button(sf::Vector2f(100.0f, 100.0f), appContext);
+    component.setPosAbsolute(sf::Vector2f(100.0f,100.0f));
     window.setFramerateLimit(appContext.config.fpsCap);
-    sf::ConvexShape polygon;
-    polygon.setPointCount(3);
-    polygon.setPoint(0, sf::Vector2f(0, 0));
-    polygon.setPoint(1, sf::Vector2f(0, 20));
-    polygon.setPoint(2, sf::Vector2f(25, 5));
-    polygon.setOutlineColor(sf::Color::Red);
-    polygon.setOutlineThickness(5);
-    polygon.setPosition({100, 100});
 
+    ContainerH container(sf::Vector2f(1000, 500), 10, 10);
+    
+    container.setBackgroundColor(sf::Color::Yellow);
+    container.setBorderSize(5);
+    container.setBorderColor(sf::Color::Red);
+    
+    container.setContainerPosition(sf::Vector2f(100,0));
 
+    for (int i = 0 ; i < 5; i++){
+        auto btn = std::make_shared<Button>(sf::Vector2f(100.0f, 100.0f), appContext);
+        btn->setText(std::string("Btn"));
+        container.addComponent(btn);    
+    }
     try{
         sf::Font font("C:\\dominik_rzeczy\\programy\\gra\\StrategyGame\\static\\fonts\\comic.ttf");
         sf::Text text(font);
@@ -28,12 +38,8 @@ int main()
         text.setOutlineColor(sf::Color::White);
         text.setString("Tekst");
 
-
     while (window.isOpen())
     {
-        
-
-
         
         while (const std::optional event = window.pollEvent())
         {
@@ -43,8 +49,8 @@ int main()
             }
         }
 
-        window.clear();
-        window.draw(polygon);
+        container.displayComponents(window);
+        sf::sleep(sf::milliseconds(100));
         window.draw(text);
         window.display();
     }

@@ -25,6 +25,13 @@ public:
         return *this->textures[path];
     };
 
+    void setFont(const std::string &fontKey, const std::string &fontPath){
+        auto newFont = std::make_unique<sf::Font>();
+        if(!newFont->openFromFile(fontPath)){
+            throw std::runtime_error("Cannot load path to font. Path: " + fontPath);
+        }
+        this->fonts.emplace(fontKey,std::move(newFont));
+    }
 
 private:
     std::map<std::string, std::unique_ptr<sf::Font>> fonts;

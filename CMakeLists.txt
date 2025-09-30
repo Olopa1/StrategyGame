@@ -18,7 +18,7 @@ add_library(game_lib
 
 target_include_directories(game_lib PUBLIC
     src
-    lib/scenesComponents
+    lib/utils/scenesComponents
 )
 
 add_executable(main src/main.cpp)
